@@ -26,14 +26,18 @@ def accueil():
 # ---------------------------------------------------------------
 @app.get("/bonjour/<prenom>")
 def bonjour(prenom):
+    # Le prénom est extrait directement de l'URL.
     return f"<h1>Bonjour {prenom} !</h1>"
 
+
+# Affiche la page de présentation avec des informations transmises au template.
 @app.get("/presentation")
 def presentation():
     return render_template("presentation.html", prenom="Léa", nom="Martin",
                        loisirs=["Jeux vidéo", "Musique", "Escalade"])
 
 
+# Génère une liste HTML à partir des loisirs fournis au template.
 @app.get("/loisirs")
 def loisirs():
     return render_template_string("""
@@ -44,17 +48,22 @@ def loisirs():
 </ul>
 """, loisirs=["Jeux vidéo", "Musique", "Escalade"])
 
+
+# Additionne les nombres a et b fournis dans les paramètres de l'URL.
 @app.get("/calcul")
 def calcul():
     a = int(request.args.get("a", 0))
     b = int(request.args.get("b", 0))
     return f"{a} + {b} = {a + b}"
 
+
+# Affiche le formulaire qui enverra ses données à la route /salut.
 @app.get("/formulaire")
 def formulaire():
     return render_template("formulaire.html")
 
 
+# Traite les données du formulaire (POST) ou les paramètres de l'URL (GET).
 @app.route("/salut", methods=["GET", "POST"])
 def salut():
     if request.method == "POST":
@@ -65,6 +74,7 @@ def salut():
         ville = request.args.get("ville", "nulle part")
     return f"Bonjour {prenom}, qui vient de {ville} ! (reçu en {request.method})"
 
+
 # 3xx : une redirection
 @app.get("/home")
 def home():
@@ -74,15 +84,17 @@ def home():
 # 4xx : un accès interdit
 @app.get("/secret")
 def secret():
+    # Déclenche l'erreur 403, traitée par le gestionnaire ci-dessous.
     abort(403)
 
 
-# Une page d'erreur 404 personnalisée
+# Affiche le template personnalisé lorsqu'une URL n'existe pas.
 @app.errorhandler(404)
 def page_introuvable(erreur):
     return render_template("404.html"), 404
 
 
+# Affiche le template personnalisé lorsqu'une page est interdite.
 @app.errorhandler(403)
 def acces_interdit(erreur):
     return render_template("403.html"), 403
