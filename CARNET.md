@@ -43,15 +43,22 @@
 
 1. Quelle est la différence entre ce que le serveur **envoie** et ce que le navigateur **affiche** ?
 
-   > _Ma réponse :_ 
+   > _Ma réponse :_ Le serveur envoie du code source brut (du texte contenant des balises HTML comme <h1>Bonjour</h1>). Le navigateur interprète ces balises pour afficher une page mise en forme visuellement (un grand titre en gras) sans montrer les balises elles-mêmes.
 
 2. À quoi servent les balises `<h1>`, `<p>`, `<ul>` et `<li>` ?
 
    > _Ma réponse :_ 
+   <h1> : Définit un titre principal de niveau 1.
+
+<p> : Définit un paragraphe de texte.
+
+<ul> : Crée une liste à puces non ordonnée (Unordered List).
+
+<li> : Représente un élément (List Item) à l'intérieur d'une liste.
 
 3. Pourquoi l'image s'affiche-t-elle alors qu'elle n'est pas sur votre serveur ?
 
-   > _Ma réponse :_ 
+   > _Ma réponse :_ C'est le navigateur du visiteur qui va télécharger l'image directement depuis le serveur distant où elle est hébergée, sans passer par votre serveur PythonAnywhere.
 
 ---
 
