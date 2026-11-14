@@ -8,7 +8,7 @@
 #  Les consignes sont dans le dossier "exercices/".
 # ---------------------------------------------------------------
 
-from flask import Flask, render_template, render_template_string
+from flask import Flask, render_template, render_template_string, request
 
 app = Flask(__name__)
 
@@ -43,6 +43,12 @@ def loisirs():
 {% endfor %}
 </ul>
 """, loisirs=["Jeux vidéo", "Musique", "Escalade"])
+
+@app.get("/calcul")
+def calcul():
+    a = int(request.args.get("a", 0))
+    b = int(request.args.get("b", 0))
+    return f"{a} + {b} = {a + b}"
 
 # ---------------------------------------------------------------
 #  Ne pas modifier : utile seulement pour lancer le site
