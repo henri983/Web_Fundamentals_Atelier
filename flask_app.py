@@ -8,7 +8,7 @@
 #  Les consignes sont dans le dossier "exercices/".
 # ---------------------------------------------------------------
 
-from flask import Flask, render_template
+from flask import Flask, render_template, render_template_string
 
 app = Flask(__name__)
 
@@ -26,13 +26,19 @@ def accueil():
 # ---------------------------------------------------------------
 @app.get("/presentation")
 def presentation():
-    return render_template("presentation.html", prenom="Léa", nom="Marin")
+    return render_template("presentation.html", prenom="Léa", nom="Martin",
+                       loisirs=["Jeux vidéo", "Musique", "Escalade"])
 
 
 @app.get("/loisirs")
 def loisirs():
-    return "J'aime lire des livres et écouter de la musique."
-
+    return render_template_string("""
+<ul>
+{% for loisir in loisirs %}
+    <li>{{ loisir }}</li>
+{% endfor %}
+</ul>
+""", loisirs=["Jeux vidéo", "Musique", "Escalade"])
 
 # ---------------------------------------------------------------
 #  Ne pas modifier : utile seulement pour lancer le site
