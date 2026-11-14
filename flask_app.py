@@ -8,7 +8,8 @@
 #  Les consignes sont dans le dossier "exercices/".
 # ---------------------------------------------------------------
 
-from flask import Flask, render_template, render_template_string, request, abort
+from flask import Flask, render_template, render_template_string, request, abort, redirect, jsonify
+from markupsafe import escape
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -29,7 +30,7 @@ def accueil():
 @app.get("/bonjour/<prenom>")
 def bonjour(prenom):
     # Le prénom est extrait directement de l'URL.
-    return f"<h1>Bonjour {prenom} !</h1>"
+    return f"<h1>Bonjour {escape(prenom)} !</h1>"
 
 
 # Affiche la page de présentation avec des informations transmises au template.
@@ -54,8 +55,11 @@ def loisirs():
 # Additionne les nombres a et b fournis dans les paramètres de l'URL.
 @app.get("/calcul")
 def calcul():
-    a = int(request.args.get("a", 0))
-    b = int(request.args.get("b", 0))
+    try:
+        a = int(request.args.get("a", 0))
+        b = int(request.args.get("b", 0))
+    except (TypeError, ValueError):
+        return "Les paramètres 'a' et 'b' doivent être des nombres entiers.", 400
     return f"{a} + {b} = {a + b}"
 
 
@@ -74,7 +78,7 @@ def salut():
     else:
         prenom = request.args.get("prenom", "inconnu")
         ville = request.args.get("ville", "nulle part")
-    return f"Bonjour {prenom}, qui vient de {ville} ! (reçu en {request.method})"
+    return f"Bonjour {escape(prenom)}, qui vient de {escape(ville)} ! (reçu en {escape(request.method)})"
 
 
 # 3xx : une redirection
@@ -128,4 +132,4 @@ def horloge():
 #  sur votre propre ordinateur (python flask_app.py)
 # ---------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
